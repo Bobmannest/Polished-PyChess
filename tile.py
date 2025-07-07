@@ -7,12 +7,10 @@ class Tile:
     width = 64
     height = 64
 
-    #def __init__(self, center: Vector2, color: tuple, piece: Piece):
-        #self.piece = piece
-    def __init__(self, center: Vector2, color: tuple, piece: Piece):
+    def __init__(self, center: Vector2, piece: Piece):
         self.center = center
-        self.color = color
-        self.Piece = Piece
+        self.piece = piece
 
-        pygame.draw.rect(screen, color, (center.x, center.y, Tile.width, Tile.height))
-
+    #Getter
+    def get_piece(self):
+        return self.piece
