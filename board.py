@@ -1,39 +1,37 @@
 import pygame
 
 from screen import screen
-from piece import Piece
+from piece import Piece, piece_board
 from tile import Tile, white, green
 
 black = (0, 0, 0)
-
 center = pygame.Vector2(120, 110)
 border_width = 8
 
 #Initialise board
 tile_board = [[None for _ in range(8)]for _ in range(8)]
-piece_board = [[None for _ in range(8)] for _ in range(8)]
 
-piece_board[0][0] = Piece('bk-rook')
-piece_board[0][1] = Piece('bk-knight')
-piece_board[0][2] = Piece('bk-bishop')
-piece_board[0][3] = Piece('bk-queen')
-piece_board[0][4] = Piece('bk-king')
-piece_board[0][5] = Piece('bk-bishop')
-piece_board[0][6] = Piece('bk-knight')
-piece_board[0][7] = Piece('bk-rook')
+Piece('bk-rook', [0, 0])
+Piece('bk-knight', [0, 1])
+Piece('bk-bishop', [0, 2])
+Piece('bk-queen', [0, 3])
+Piece('bk-king', [0, 4])
+Piece('bk-bishop', [0, 5])
+Piece('bk-knight', [0, 6])
+Piece('bk-rook', [0, 7])
 
-piece_board[7][0] = Piece('wt-rook')
-piece_board[7][1] = Piece('wt-knight')
-piece_board[7][2] = Piece('wt-bishop')
-piece_board[7][3] = Piece('wt-king')
-piece_board[7][4] = Piece('wt-queen')
-piece_board[7][5] = Piece('wt-bishop')
-piece_board[7][6] = Piece('wt-knight')
-piece_board[7][7] = Piece('wt-rook')
+Piece('wt-rook', [7, 0])
+Piece('wt-knight', [7, 1])
+Piece('wt-bishop', [7, 2])
+Piece('wt-king', [7, 3])
+Piece('wt-queen', [7, 4])
+Piece('wt-bishop', [7, 5])
+Piece('wt-knight', [7, 6])
+Piece('wt-rook', [7, 7])
 
 for tile in range(8):
-    piece_board[1][tile] = Piece('bk-pawn')
-    piece_board[6][tile] = Piece('wt-pawn')
+    Piece('bk-pawn', [1, tile])
+    Piece('wt-pawn', [6, tile])
 
 
 def color_pick(row, tile):
@@ -61,15 +59,11 @@ def draw_tiles():
 
 
 def draw_pieces():
-    for row in range(8):
-        for tile in range(8):
-            #Display piece images
-            tilex = center.x + tile * 64
-            tiley = center.y + row * 64
-            if piece_board[row][tile] is not None:
-                image = pygame.image.load('pieces/' + piece_board[row][tile].get_type() + '.png')
-                image_resized = pygame.transform.scale(image, (64, 64))
-                screen.blit(image_resized, (tilex, tiley))
+    for row in piece_board:
+        for piece in row:
+            if piece is not None:
+                piece.draw(screen)
+
 
 
 

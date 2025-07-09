@@ -2,6 +2,7 @@ import pygame
 
 from board import tile_board
 
+
 def events_setup():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -10,6 +11,7 @@ def events_setup():
             pygame.mouse.set_visible(0)
         elif event.type == pygame.MOUSEBUTTONUP:
             pygame.mouse.set_visible(1)
+
 
 def tile_hover_color_change():
     mouse_pos = pygame.mouse.get_pos()
