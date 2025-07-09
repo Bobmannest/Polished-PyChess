@@ -56,6 +56,7 @@ def draw_tiles():
     for row in range(8):
         for tile in range(8):
             tile_board[row][tile].draw()
+            
 
 
 def draw_pieces():
