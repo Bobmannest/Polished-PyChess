@@ -63,3 +63,4 @@ def board_check():
             row_types += piece_type
             row_types += ' '
         print(row_types)
+    print('\n')
