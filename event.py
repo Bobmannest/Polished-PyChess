@@ -1,7 +1,7 @@
 import pygame
 
 from screen import screen
-from tile import board
+from tile import board, board_check
 
 selected_piece = None
 
@@ -26,11 +26,20 @@ def mouse_events_setup(mouse_pos):
                         if tile.get_rect().collidepoint(mouse_pos):
                             global selected_piece
                             selected_piece = tile.get_piece()
+                            tile.set_piece(None)
                     elif tile.get_piece() is None:
                         if tile.get_rect().collidepoint(mouse_pos):
                             selected_piece = None
-        elif event.type == pygame.MOUSEBUTTONUP:
-            print('up')
+
+        elif event.type == pygame.MOUSEBUTTONUP and selected_piece is not None:
+            for row in board:
+                for tile in row:
+                    if tile.get_piece() is None:
+                        if tile.get_rect().collidepoint(mouse_pos):
+                            tile.set_piece(selected_piece)
+                    else:
+                        print('fail')
+            board_check()
 
     if pygame.mouse.get_pressed()[0]:
         if selected_piece is not None:

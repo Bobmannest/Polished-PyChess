@@ -1,7 +1,7 @@
 import pygame
 
 from pygame import Color
-from board import init_tiles, draw_board, init_pieces
+from board_init import init_tiles, draw_board, init_pieces
 from event import mouse_events_setup, tile_hover_color_change
 from tile import board_check
 from screen import screen
@@ -24,7 +24,7 @@ while True:
     draw_board()
     mouse_events_setup(mouse_pos)
     if init:
-        board_check()
+        #board_check()
         init = False
 
 
