@@ -1,6 +1,8 @@
 import pygame
-
+from typing import Optional
 from pygame import Vector2
+
+from piece import Piece
 from screen import screen
 
 white = (207, 250, 219)
@@ -8,16 +10,22 @@ d_white = (182, 219, 192)
 green = (79, 168, 103)
 d_green = (67, 143, 88)
 
+board = [[None for _ in range(8)] for _ in range(8)]
 
 class Tile:
-    def __init__(self, center: Vector2, color: tuple):
-        self.center = center
+    def __init__(self, position: list, color: tuple, piece: Optional[Piece] = None):
+        self.position = position
         self.color = color
+        self.piece = piece
 
-        self.rect = pygame.Rect(self.center.x, self.center.y, 64, 64)
+        self.rect = pygame.Rect(120+self.position[1]*64, 110+self.position[0]*64, 64, 64)
 
     def draw(self):
         pygame.draw.rect(screen, self.color, self.rect)
+        if self.piece is not None:
+            piece_image = pygame.image.load('pieces/' + self.piece.get_type() + '.png')
+            piece_image_resized = pygame.transform.scale(piece_image, (64, 64))
+            screen.blit(piece_image_resized, (120 + self.position[1] * 64, 110 + self.position[0] * 64))
 
     def darken(self):
         if self.color == green:
@@ -31,8 +39,27 @@ class Tile:
         elif self.color == d_white:
             self.color = white
 
-    def get_center(self):
-        return self.center
+    def get_position(self):
+        return self.position
 
     def get_rect(self):
         return self.rect
+
+    def get_piece(self):
+        return self.piece
+
+    def set_piece(self, new_piece:Optional[Piece] = None):
+        self.piece = new_piece
+
+
+def board_check():
+    for row in board:
+        row_types = ''
+        for tile in row:
+            if tile.get_piece() is not None:
+                piece_type = tile.get_piece().get_type()
+            else:
+                piece_type = 'none'
+            row_types += piece_type
+            row_types += ' '
+        print(row_types)
