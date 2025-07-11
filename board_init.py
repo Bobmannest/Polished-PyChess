@@ -4,10 +4,6 @@ from screen import screen
 from piece import Piece
 from tile import Tile, board, white, green
 
-black = (0, 0, 0)
-center = pygame.Vector2(120, 110)
-border_width = 8
-
 
 def color_pick(row, tile):
     if (row + tile) % 2 == 0:
@@ -44,16 +40,4 @@ def init_pieces():
     for tile in range(8):
         board[1][tile].set_piece(Piece('bk-pawn'))
         board[6][tile].set_piece(Piece('wt-pawn'))
-
-
-def draw_board():
-    pygame.draw.rect(screen, black, (center.x - border_width, center.y - border_width, 512 + 2 * border_width, 512 + 2 * border_width))
-    for row in board:
-        for tile in row:
-            board[tile.get_position()[1]][tile.get_position()[0]].draw()
-
-
-
-
-
 

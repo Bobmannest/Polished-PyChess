@@ -1,0 +1,6 @@
+1) Restrict piece movement depending on the type of piece
+2) Restrict piece movement depending on the type of piece AND if there are any other pieces blocking the way
+   (except knight ofc)
+3) Allow pieces to be taken by others so detect if other target piece on the target tile is an enemy piece
+4) Pawns need more complex logic unlike the other pieces!
+4) Add win condition and other misc features like the ability to move pawns up 2 spaces at the first movement

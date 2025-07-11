@@ -5,6 +5,10 @@ from pygame import Vector2
 from piece import Piece
 from screen import screen
 
+center = pygame.Vector2(120, 110)
+border_width = 8
+
+black = (0, 0, 0)
 white = (207, 250, 219)
 d_white = (182, 219, 192)
 green = (79, 168, 103)
@@ -50,6 +54,13 @@ class Tile:
 
     def set_piece(self, new_piece:Optional[Piece] = None):
         self.piece = new_piece
+
+
+def draw_board():
+    pygame.draw.rect(screen, black, (center.x - border_width, center.y - border_width, 512 + 2 * border_width, 512 + 2 * border_width))
+    for row in board:
+        for tile in row:
+            board[tile.get_position()[1]][tile.get_position()[0]].draw()
 
 
 def board_check():

@@ -1,0 +1,1 @@
+- When dragging a piece and releasing outside the chess board, piece disappears and is gone forever

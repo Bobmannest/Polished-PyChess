@@ -1,9 +1,9 @@
 import pygame
 
 from pygame import Color
-from board_init import init_tiles, draw_board, init_pieces
+from board_init import init_tiles, init_pieces
 from event import mouse_events_setup, tile_hover_color_change
-from tile import board_check
+from tile import draw_board
 from screen import screen
 
 pygame.init()
