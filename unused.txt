@@ -1,0 +1,23 @@
+class Pawn(Piece):
+    def calculate_available_moves(self):
+        print('pawn')
+
+class Rook(Piece):
+    def calculate_available_moves(self):
+        print('rook')
+
+class Knight(Piece):
+    def calculate_available_moves(self):
+        print('knight')
+
+class Bishop(Piece):
+    def calculate_available_moves(self):
+        print('bishop')
+
+class Queen(Piece):
+    def calculate_available_moves(self):
+        print('queen')
+
+class King(Piece):
+    def calculate_available_moves(self):
+        print('king')

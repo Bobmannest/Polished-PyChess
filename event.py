@@ -13,9 +13,9 @@ def tile_hover_color_change(mouse_pos):
     for row in board:
         for tile in row:
             if tile.get_rect().collidepoint(mouse_pos):
-                tile.darken()
+                tile.darken_color()
             else:
-                tile.lighten()
+                tile.normalise_color()
 
 
 def mouse_click_board_check(mouse_pos):

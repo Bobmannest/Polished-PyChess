@@ -11,8 +11,10 @@ border_width = 8
 black = (0, 0, 0)
 white = (207, 250, 219)
 d_white = (182, 219, 192)
+l_white = (230, 252, 236)
 green = (79, 168, 103)
 d_green = (67, 143, 88)
+l_green = (99, 212, 130)
 
 board = [[None for _ in range(8)] for _ in range(8)]
 
@@ -31,17 +33,23 @@ class Tile:
             piece_image_resized = pygame.transform.scale(piece_image, (64, 64))
             screen.blit(piece_image_resized, (120 + self.position[1] * 64, 110 + self.position[0] * 64))
 
-    def darken(self):
+    def darken_color(self):
         if self.color == green:
             self.color = d_green
         elif self.color == white:
             self.color = d_white
 
-    def lighten(self):
-        if self.color == d_green:
+    def normalise_color(self):
+        if self.color == d_green or self.color == l_green:
             self.color = green
-        elif self.color == d_white:
+        elif self.color == d_white or self.color == l_white:
             self.color = white
+
+    def lighten_color(self):
+        if self.color == green:
+            self.color = l_green
+        elif self.color == white:
+            self.color = l_white
 
     def get_position(self):
         return self.position
