@@ -45,11 +45,9 @@ class Tile:
         elif self.color == d_white or self.color == l_white:
             self.color = white
 
-    def lighten_color(self):
-        if self.color == green:
-            self.color = l_green
-        elif self.color == white:
-            self.color = l_white
+    def whiten_color(self):
+        self.color = white
+
 
     def get_position(self):
         return self.position
