@@ -42,6 +42,16 @@ def mouse_release_board_check(mouse_pos):
                     temp_tile.set_piece(temp_piece)
 
 
+def piece_dragging_visuals(mouse_pos):
+    if pygame.mouse.get_pressed()[0] and currently_selected_piece is not None:
+        pygame.mouse.set_visible(0)
+        piece_image = pygame.image.load('pieces/' + currently_selected_piece.get_type() + '.png')
+        piece_image_resized = pygame.transform.scale(piece_image, (64, 64))
+        screen.blit(piece_image_resized, (mouse_pos[0] - 32, mouse_pos[1] - 32))
+    else:
+        pygame.mouse.set_visible(1)
+
+
 def mouse_events_setup(mouse_pos):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -51,12 +61,4 @@ def mouse_events_setup(mouse_pos):
         elif event.type == pygame.MOUSEBUTTONUP and currently_selected_piece is not None:
             mouse_release_board_check(mouse_pos)
             #board_check()
-
-    if pygame.mouse.get_pressed()[0]:
-        if currently_selected_piece is not None:
-            pygame.mouse.set_visible(0)
-            piece_image = pygame.image.load('pieces/' + currently_selected_piece.get_type() + '.png')
-            piece_image_resized = pygame.transform.scale(piece_image, (64, 64))
-            screen.blit(piece_image_resized, (mouse_pos[0] - 32, mouse_pos[1] - 32))
-    else:
-        pygame.mouse.set_visible(1)
+    piece_dragging_visuals(mouse_pos)
