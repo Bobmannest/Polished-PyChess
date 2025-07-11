@@ -1,7 +1,7 @@
 import pygame
 
 from pygame import Color
-from board_init import init_tiles, init_pieces
+from board_init import init_tiles, init_pieces, test_init_pieces
 from event import mouse_events_setup, tile_hover_color_change
 from tile import draw_board
 from screen import screen
@@ -11,7 +11,7 @@ pygame.init()
 clock = pygame.time.Clock()
 
 init_tiles()
-init_pieces()
+test_init_pieces() #init_pieces()
 init = True
 
 while True:

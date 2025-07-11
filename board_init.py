@@ -18,6 +18,7 @@ def init_tiles():
         for tile in range(8):
             board[row][tile] = Tile([row, tile], color_pick(row, tile), None)
 
+
 def init_pieces():
     board[0][0].set_piece(Rook('bk-rook'))
     board[0][1].set_piece(Knight('bk-knight'))
@@ -41,3 +42,10 @@ def init_pieces():
         board[1][tile].set_piece(Pawn('bk-pawn'))
         board[6][tile].set_piece(Pawn('wt-pawn'))
 
+
+def test_init_pieces():
+    board[3][3].set_piece(Rook('wt-rook'))
+    board[3][5].set_piece(Rook('wt-rook'))
+    board[5][3].set_piece(Rook('wt-rook'))
+    board[1][3].set_piece(Rook('wt-rook'))
+    board[3][1].set_piece(Rook('wt-rook'))

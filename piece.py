@@ -21,21 +21,24 @@ class Rook(Piece):
         row, tile = tile_pos
 
         t = tile - 1
-        while t >= 0:
+        while t >= 0 and board[row][t].get_piece() is None:
             available_moves.append([row, t])
             t -= 1
         t = tile + 1
-        while t <= 7:
+        while t <= 7 and board[row][t].get_piece() is None:
             available_moves.append([row, t])
             t += 1
+
         r = row - 1
-        while r >= 0:
+        t = tile
+        while r >= 0 and board[r][t].get_piece() is None:
             available_moves.append([r, t])
             r -= 1
         r = row + 1
-        while r <= 7:
+        while r <= 7 and board[r][t].get_piece() is None:
             available_moves.append([r, t])
             r += 1
+
         return available_moves
 
 class Knight(Piece):

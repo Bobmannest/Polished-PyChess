@@ -23,6 +23,13 @@ def tile_hover_color_change(mouse_pos):
                 tile.normalise_color()
 
 
+def selected_tile_available_move_visuals():
+    for row in board:
+        for tile in row:
+            if tile.get_position() in temp_piece.get_available_moves(temp_tile.get_position(), board):
+                screen.blit(circle_resized, (120 + tile.get_position()[1] * 64, 110 + tile.get_position()[0] * 64))
+
+
 def mouse_click_board_check(mouse_pos):
     for row in board:
         for tile in row:
@@ -41,7 +48,7 @@ def mouse_release_board_check(mouse_pos):
     for row in board:
         for tile in row:
             if tile.get_rect().collidepoint(mouse_pos):
-                if tile.get_piece() is None:
+                if tile.get_piece() is None and tile.get_position() in temp_piece.get_available_moves(temp_tile.get_position(), board):
                     tile.set_piece(currently_selected_piece)
                 else:
                     temp_tile.set_piece(temp_piece)
@@ -49,16 +56,11 @@ def mouse_release_board_check(mouse_pos):
 
 def piece_dragging_visuals(mouse_pos):
     if pygame.mouse.get_pressed()[0] and currently_selected_piece is not None:
+        selected_tile_available_move_visuals()
         pygame.mouse.set_visible(0)
         piece_image = pygame.image.load('pieces/' + currently_selected_piece.get_type() + '.png')
         piece_image_resized = pygame.transform.scale(piece_image, (64, 64))
         screen.blit(piece_image_resized, (mouse_pos[0]-32, mouse_pos[1]-32))
-
-        for row in board:
-            for tile in row:
-                if tile.get_position() in temp_piece.get_available_moves(temp_tile.get_position(), board):
-                    screen.blit(circle_resized, (120+tile.get_position()[1]*64, 110+tile.get_position()[0]*64))
-
     else:
         pygame.mouse.set_visible(1)
 
