@@ -10,8 +10,8 @@ currently_selected_piece = None
 temp_tile = None
 temp_piece = None
 
-circle = pygame.image.load('misc_visuals/circle.png')
-circle_resized = pygame.transform.scale(circle, (64, 64))
+square = pygame.image.load('misc_visuals/square.png')
+square_resized = pygame.transform.scale(square, (64, 64))
 
 
 def tile_hover_color_change(mouse_pos):
@@ -27,7 +27,7 @@ def selected_tile_available_move_visuals():
     for row in board:
         for tile in row:
             if tile.get_position() in temp_piece.get_available_moves(temp_tile.get_position(), board):
-                screen.blit(circle_resized, (120 + tile.get_position()[1] * 64, 110 + tile.get_position()[0] * 64))
+                screen.blit(square_resized, (120 + tile.get_position()[1] * 64, 110 + tile.get_position()[0] * 64))
 
 
 def mouse_click_board_check(mouse_pos):
