@@ -44,7 +44,7 @@ def init_pieces():
 
 
 def test_init_pieces():
-    board[3][3].set_piece(Rook('wt-rook'))
+    board[3][3].set_piece(Pawn('bk-pawn'))
     board[3][5].set_piece(Rook('wt-rook'))
     board[5][3].set_piece(Rook('wt-rook'))
     board[1][3].set_piece(Rook('wt-rook'))

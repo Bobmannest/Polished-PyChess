@@ -13,7 +13,13 @@ class Piece:
 
 class Pawn(Piece):
     def get_available_moves(self, tile_pos, board):
-        print('pawn')
+        available_moves = []
+        row, tile = tile_pos
+        if 'wt' in self.type and board[row - 1][tile].get_piece() is None:
+            available_moves.append([row - 1, tile])
+        elif 'bk' in self.type and board[row + 1][tile].get_piece() is None:
+            available_moves.append([row + 1, tile])
+        return available_moves
 
 class Rook(Piece):
     def get_available_moves(self, tile_pos, board):
@@ -38,7 +44,6 @@ class Rook(Piece):
         while r <= 7 and board[r][t].get_piece() is None:
             available_moves.append([r, t])
             r += 1
-
         return available_moves
 
 class Knight(Piece):
