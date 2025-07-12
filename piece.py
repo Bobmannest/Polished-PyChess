@@ -12,6 +12,7 @@ class Piece:
     def get_type(self):
         return self.type
 
+
 #Fix spaghetti with some nice functions which take +1 or -1 as input
 class Pawn(Piece):
     def get_available_moves(self, temp_piece, tile_pos, board):
@@ -20,22 +21,20 @@ class Pawn(Piece):
         if 'wt' in self.type:
             if board[row - 1][tile].get_piece() is None:
                 available_moves.append([row - 1, tile])
-            if board[row - 1][tile - 1].get_piece() is not None:
-                if opposite_side(temp_piece, board[row - 1][tile - 1].get_piece()):
-                    available_moves.append([row - 1, tile - 1])
-            if board[row - 1][tile + 1].get_piece() is not None:
-                if opposite_side(temp_piece, board[row - 1][tile + 1].get_piece()):
-                    available_moves.append([row - 1, tile + 1])
+            pawn_move_calc(board[row - 1][tile - 1], temp_piece, available_moves)
+            pawn_move_calc(board[row - 1][tile + 1], temp_piece, available_moves)
         elif 'bk' in self.type:
             if board[row + 1][tile].get_piece() is None:
                 available_moves.append([row + 1, tile])
-            if board[row + 1][tile - 1].get_piece() is not None:
-                if opposite_side(temp_piece, board[row + 1][tile - 1].get_piece()):
-                    available_moves.append([row + 1, tile - 1])
-            if board[row + 1][tile + 1].get_piece() is not None:
-                if opposite_side(temp_piece, board[row + 1][tile + 1].get_piece()):
-                    available_moves.append([row + 1, tile + 1])
+            pawn_move_calc(board[row + 1][tile - 1], temp_piece, available_moves)
+            pawn_move_calc(board[row + 1][tile + 1], temp_piece, available_moves)
         return available_moves
+
+
+def pawn_move_calc(tile, temp_piece, available_moves):
+    if tile.get_piece() is not None:
+        if opposite_side(temp_piece, tile.get_piece()):
+            available_moves.append(tile.get_position())
 
 
 class Rook(Piece):
@@ -46,53 +45,6 @@ class Rook(Piece):
 
         return available_moves
 
-
-class Knight(Piece):
-    def get_available_moves(self, temp_piece, tile_pos, board):
-        available_moves = []
-        row, tile = tile_pos
-
-        t = tile + 2
-        available_moves.append([row + 1, t]), available_moves.append([row - 1, t])
-        t = tile - 2
-        available_moves.append([row + 1, t]), available_moves.append([row - 1, t])
-        t = tile - 1
-        available_moves.append([row + 2, t]), available_moves.append([row - 2, t])
-        t = tile + 1
-        available_moves.append([row + 2, t]), available_moves.append([row - 2, t])
-
-        return remove_occupied_tile_positions(board, available_moves)
-
-
-class Bishop(Piece):
-    def get_available_moves(self, temp_piece, tile_pos, board):
-        available_moves = []
-
-        bishop_available_moves(available_moves, tile_pos, board)
-
-        return available_moves
-
-
-class Queen(Piece):
-    def get_available_moves(self, temp_piece, tile_pos, board):
-        print('queen')
-
-
-class King(Piece):
-    def get_available_moves(self, temp_piece, tile_pos, board):
-        available_moves = []
-        row, tile = tile_pos
-
-        r = row + 1
-        for _ in range(2):
-            t = tile - 1
-            for _ in range(3):
-                available_moves.append([r, t])
-                t += 1
-            r = row - 1
-        available_moves.append([row, tile - 1]), available_moves.append([row, tile + 1])
-
-        return remove_occupied_tile_positions(board, available_moves)
 
 #I will make this less spaghetti later
 def rook_available_moves(available_moves, temp_piece, tile_pos, board):
@@ -125,6 +77,32 @@ def rook_available_moves(available_moves, temp_piece, tile_pos, board):
         available_moves.append([r, t])
 
 
+class Knight(Piece):
+    def get_available_moves(self, temp_piece, tile_pos, board):
+        available_moves = []
+        row, tile = tile_pos
+
+        t = tile + 2
+        available_moves.append([row + 1, t]), available_moves.append([row - 1, t])
+        t = tile - 2
+        available_moves.append([row + 1, t]), available_moves.append([row - 1, t])
+        t = tile - 1
+        available_moves.append([row + 2, t]), available_moves.append([row - 2, t])
+        t = tile + 1
+        available_moves.append([row + 2, t]), available_moves.append([row - 2, t])
+
+        return remove_occupied_tile_positions(board, available_moves)
+
+
+class Bishop(Piece):
+    def get_available_moves(self, temp_piece, tile_pos, board):
+        available_moves = []
+
+        bishop_available_moves(available_moves, tile_pos, board)
+
+        return available_moves
+
+#Make less spaghetti garbage
 def bishop_available_moves(available_moves, tile_pos, board):
     row, tile = tile_pos
 
@@ -153,12 +131,35 @@ def bishop_available_moves(available_moves, tile_pos, board):
         t2 += 1
 
 
+class Queen(Piece):
+    def get_available_moves(self, temp_piece, tile_pos, board):
+        print('queen')
+
+
+class King(Piece):
+    def get_available_moves(self, temp_piece, tile_pos, board):
+        available_moves = []
+        row, tile = tile_pos
+
+        r = row + 1
+        for _ in range(2):
+            t = tile - 1
+            for _ in range(3):
+                available_moves.append([r, t])
+                t += 1
+            r = row - 1
+        available_moves.append([row, tile - 1]), available_moves.append([row, tile + 1])
+
+        return remove_occupied_tile_positions(board, available_moves)
+
+
 def remove_occupied_tile_positions(board, available_moves):
     for row in board:
         for tile in row:
             if tile.get_piece() is not None and tile.get_position() in available_moves:
                 available_moves.remove(tile.get_position())
     return available_moves
+
 
 def opposite_side(current_piece, target_piece):
     if 'wt' in current_piece.get_type() and 'bk' in target_piece.get_type():
