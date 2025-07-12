@@ -12,16 +12,30 @@ class Piece:
     def get_type(self):
         return self.type
 
-
+#Fix spaghetti with some nice functions which take +1 or -1 as input
 class Pawn(Piece):
-    def get_available_moves(self,temp_piece, tile_pos, board):
+    def get_available_moves(self, temp_piece, tile_pos, board):
         available_moves = []
         row, tile = tile_pos
         if 'wt' in self.type:
-            available_moves.append([row - 1, tile])
+            if board[row - 1][tile].get_piece() is None:
+                available_moves.append([row - 1, tile])
+            if board[row - 1][tile - 1].get_piece() is not None:
+                if opposite_side(temp_piece, board[row - 1][tile - 1].get_piece()):
+                    available_moves.append([row - 1, tile - 1])
+            if board[row - 1][tile + 1].get_piece() is not None:
+                if opposite_side(temp_piece, board[row - 1][tile + 1].get_piece()):
+                    available_moves.append([row - 1, tile + 1])
         elif 'bk' in self.type:
-            available_moves.append([row + 1, tile])
-        return remove_occupied_tile_positions(board, available_moves)
+            if board[row + 1][tile].get_piece() is None:
+                available_moves.append([row + 1, tile])
+            if board[row + 1][tile - 1].get_piece() is not None:
+                if opposite_side(temp_piece, board[row + 1][tile - 1].get_piece()):
+                    available_moves.append([row + 1, tile - 1])
+            if board[row + 1][tile + 1].get_piece() is not None:
+                if opposite_side(temp_piece, board[row + 1][tile + 1].get_piece()):
+                    available_moves.append([row + 1, tile + 1])
+        return available_moves
 
 
 class Rook(Piece):
@@ -80,7 +94,7 @@ class King(Piece):
 
         return remove_occupied_tile_positions(board, available_moves)
 
-#I will probably make this less spaghetti later
+#I will make this less spaghetti later
 def rook_available_moves(available_moves, temp_piece, tile_pos, board):
     row, tile = tile_pos
 
