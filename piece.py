@@ -118,7 +118,6 @@ def bishop_available_moves(available_moves, tile_pos, board):
         r2 += 1
         t2 -= 1
 
-
     r = row - 1
     t = tile + 1
     r2 = row + 1
@@ -132,10 +131,11 @@ def bishop_available_moves(available_moves, tile_pos, board):
         t2 += 1
 
 
-
 def remove_occupied_tile_positions(board, available_moves):
     for row in board:
         for tile in row:
             if tile.get_piece() is not None and tile.get_position() in available_moves:
                 available_moves.remove(tile.get_position())
     return available_moves
+
+

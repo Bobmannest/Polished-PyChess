@@ -10,9 +10,8 @@ square_resized = pygame.transform.scale(square, (64, 64))
 
 #temporary storage variables
 currently_selected_piece = None
-temp_tile = None
-temp_piece = None
-
+temp_currently_selected_tile = None
+temp_currently_selected_piece = None
 
 def tile_hover_color_change(mouse_pos):
     for row in board:
@@ -26,8 +25,17 @@ def tile_hover_color_change(mouse_pos):
 def selected_tile_available_move_visuals():
     for row in board:
         for tile in row:
-            if tile.get_position() in temp_piece.get_available_moves(temp_tile.get_position(), board):
+            if tile.get_position() in temp_currently_selected_piece.get_available_moves(temp_currently_selected_tile.get_position(), board):
                 screen.blit(square_resized, (120 + tile.get_position()[1] * 64, 110 + tile.get_position()[0] * 64))
+
+
+def opposite_side(current_piece, target_piece):
+    if 'wt' in current_piece.get_type() and 'bk' in target_piece.get_type():
+        return True
+    elif 'bk' in current_piece.get_type() and 'wt' in target_piece.get_type():
+        return True
+    else:
+        return False
 
 
 def mouse_click_board_check(mouse_pos):
@@ -35,9 +43,9 @@ def mouse_click_board_check(mouse_pos):
         for tile in row:
             if tile.get_rect().collidepoint(mouse_pos):
                 if tile.get_piece() is not None:
-                    global currently_selected_piece, temp_piece, temp_tile
-                    temp_tile = tile
-                    temp_piece = tile.get_piece()
+                    global currently_selected_piece, temp_currently_selected_piece, temp_currently_selected_tile
+                    temp_currently_selected_tile = tile
+                    temp_currently_selected_piece = tile.get_piece()
                     currently_selected_piece = tile.get_piece()
                     tile.set_piece(None)
                 else:
@@ -48,10 +56,14 @@ def mouse_release_board_check(mouse_pos):
     for row in board:
         for tile in row:
             if tile.get_rect().collidepoint(mouse_pos):
-                if tile.get_piece() is None and tile.get_position() in temp_piece.get_available_moves(temp_tile.get_position(), board):
+                current_piece_available_moves = temp_currently_selected_piece.get_available_moves(temp_currently_selected_tile.get_position(), board)
+                if tile.get_piece() is not None:
+                    if opposite_side(temp_currently_selected_piece, tile.get_piece()):
+                        current_piece_available_moves.append(tile.get_position())
+                if tile.get_position() in current_piece_available_moves:
                     tile.set_piece(currently_selected_piece)
                 else:
-                    temp_tile.set_piece(temp_piece)
+                    temp_currently_selected_tile.set_piece(temp_currently_selected_piece)
 
 
 def piece_dragging_visuals(mouse_pos):
