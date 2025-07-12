@@ -1,2 +1,0 @@
-if tile.get_position() in temp_piece.get_available_moves(temp_tile.get_position(), board):
-    tile.lighten_color()

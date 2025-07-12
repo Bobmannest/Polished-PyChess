@@ -48,7 +48,6 @@ class Tile:
     def whiten_color(self):
         self.color = white
 
-
     def get_position(self):
         return self.position
 

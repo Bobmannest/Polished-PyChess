@@ -21,32 +21,15 @@ class Pawn(Piece):
             available_moves.append([row - 1, tile])
         elif 'bk' in self.type:
             available_moves.append([row + 1, tile])
-        return tile_occupied_check(board, available_moves)
+        return remove_occupied_tile_positions(board, available_moves)
 
 
 class Rook(Piece):
     def get_available_moves(self, tile_pos, board):
         available_moves = []
-        row, tile = tile_pos
 
-        t = tile - 1
-        while t >= 0 and board[row][t].get_piece() is None:
-            available_moves.append([row, t])
-            t -= 1
-        t = tile + 1
-        while t <= 7 and board[row][t].get_piece() is None:
-            available_moves.append([row, t])
-            t += 1
+        rook_available_moves(available_moves, tile_pos, board)
 
-        r = row - 1
-        t = tile
-        while r >= 0 and board[r][t].get_piece() is None:
-            available_moves.append([r, t])
-            r -= 1
-        r = row + 1
-        while r <= 7 and board[r][t].get_piece() is None:
-            available_moves.append([r, t])
-            r += 1
         return available_moves
 
 
@@ -64,10 +47,16 @@ class Knight(Piece):
         t = tile + 1
         available_moves.append([row + 2, t]), available_moves.append([row - 2, t])
 
-        return tile_occupied_check(board, available_moves)
+        return remove_occupied_tile_positions(board, available_moves)
+
+
 class Bishop(Piece):
     def get_available_moves(self, tile_pos, board):
-        print('bishop')
+        available_moves = []
+
+        bishop_available_moves(available_moves, tile_pos, board)
+
+        return available_moves
 
 
 class Queen(Piece):
@@ -77,9 +66,74 @@ class Queen(Piece):
 
 class King(Piece):
     def get_available_moves(self, tile_pos, board):
-        print('king')
+        available_moves = []
+        row, tile = tile_pos
 
-def tile_occupied_check(board, available_moves):
+        r = row + 1
+        for _ in range(2):
+            t = tile - 1
+            for _ in range(3):
+                available_moves.append([r, t])
+                t += 1
+            r = row - 1
+        available_moves.append([row, tile - 1]), available_moves.append([row, tile + 1])
+
+        return remove_occupied_tile_positions(board, available_moves)
+
+
+def rook_available_moves(available_moves, tile_pos, board):
+    row, tile = tile_pos
+
+    t = tile - 1
+    while t >= 0 and board[row][t].get_piece() is None:
+        available_moves.append([row, t])
+        t -= 1
+    t = tile + 1
+    while t <= 7 and board[row][t].get_piece() is None:
+        available_moves.append([row, t])
+        t += 1
+    r = row - 1
+    t = tile
+    while r >= 0 and board[r][t].get_piece() is None:
+        available_moves.append([r, t])
+        r -= 1
+    r = row + 1
+    while r <= 7 and board[r][t].get_piece() is None:
+        available_moves.append([r, t])
+        r += 1
+
+
+def bishop_available_moves(available_moves, tile_pos, board):
+    row, tile = tile_pos
+
+    r = row - 1
+    t = tile - 1
+    r2 = row + 1
+    t2 = tile - 1
+    while t >= 0:
+        available_moves.append([r, t])
+        available_moves.append([r2, t2])
+        r -= 1
+        t -= 1
+        r2 += 1
+        t2 -= 1
+
+
+    r = row - 1
+    t = tile + 1
+    r2 = row + 1
+    t2 = tile + 1
+    while t <= 7:
+        available_moves.append([r, t])
+        available_moves.append([r2, t2])
+        r -= 1
+        t += 1
+        r2 += 1
+        t2 += 1
+
+
+
+def remove_occupied_tile_positions(board, available_moves):
     for row in board:
         for tile in row:
             if tile.get_piece() is not None and tile.get_position() in available_moves:
