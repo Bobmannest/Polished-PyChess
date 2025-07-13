@@ -1,7 +1,4 @@
-import pygame
-
-from screen import screen
-from piece import Piece, Rook, King, Bishop, Knight, Queen, Pawn
+from piece import Rook, King, Bishop, Knight, Queen, Pawn
 from tile import Tile, board, white, green
 
 

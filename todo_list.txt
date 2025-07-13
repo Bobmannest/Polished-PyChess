@@ -9,11 +9,11 @@ DONE extra) Let taking enemy pieces be shown as a visual when dragging a piece
 
 DONE 4) Pawns need more complex logic unlike the other pieces!
 
-extra) king and knight cannot take opponent pieces so modify their function to do so
+DONE extra) king and knight cannot take opponent pieces so modify their function to do so
 
 5) Add king logic that takes into consideration all other pieces' available moves so king cant go to a tile which he
 can die to
 
-6)Add pawn conversion choice when they reach the end
+6)Add pawn conversion choice when they reach the end and pawns get to go up 2 pieces on their first turn
 
 7) Add win condition and other misc features like the ability to move pawns up 2 spaces at the first movement

@@ -1,9 +1,7 @@
-from copy import copy
-
 import pygame
 
 from screen import screen
-from tile import board, board_check
+from tile import board
 
 square = pygame.image.load('misc_visuals/square.png')
 square_resized = pygame.transform.scale(square, (64, 64))
@@ -74,5 +72,4 @@ def mouse_events_setup(mouse_pos):
             mouse_click_board_check(mouse_pos)
         elif event.type == pygame.MOUSEBUTTONUP and currently_selected_piece is not None:
             mouse_release_board_check(mouse_pos)
-            #board_check()
     piece_dragging_visuals(mouse_pos)
