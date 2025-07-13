@@ -19,12 +19,14 @@ class Pawn(Piece):
             if board[row - 1][tile].get_piece() is None:
                 available_moves.append([row - 1, tile])
             pawn_move_calc(board[row - 1][tile - 1], temp_piece, available_moves)
-            pawn_move_calc(board[row - 1][tile + 1], temp_piece, available_moves)
+            if tile < 7:
+                pawn_move_calc(board[row - 1][tile + 1], temp_piece, available_moves)
         elif 'bk' in self.type:
             if board[row + 1][tile].get_piece() is None:
                 available_moves.append([row + 1, tile])
             pawn_move_calc(board[row + 1][tile - 1], temp_piece, available_moves)
-            pawn_move_calc(board[row + 1][tile + 1], temp_piece, available_moves)
+            if tile < 7:
+                pawn_move_calc(board[row + 1][tile + 1], temp_piece, available_moves)
         return available_moves
 
 
