@@ -57,6 +57,7 @@ def rook_available_moves(available_moves, temp_piece, tile_pos, board):
         elif board[row][tile_L].get_piece() is not None and opposite_side(temp_piece, board[row][tile_L].get_piece()):
             available_moves.append([row, tile_L])
 
+
     tile_R = tile + 1
     for _ in range(7 - tile):
         if board[row][tile_R].get_piece() is None:
@@ -65,8 +66,21 @@ def rook_available_moves(available_moves, temp_piece, tile_pos, board):
         elif board[row][tile_R].get_piece() is not None and opposite_side(temp_piece, board[row][tile_R].get_piece()):
             available_moves.append([row, tile_R])
 
+    row_U = row - 1
+    for _ in range(row):
+        if board[row_U][tile].get_piece() is None:
+            available_moves.append([row_U, tile])
+            row_U -= 1
+        elif board[row_U][tile].get_piece() is not None and opposite_side(temp_piece, board[row_U][tile].get_piece()):
+            available_moves.append([row_U, tile])
 
-
+    row_D = row + 1
+    for _ in range(7 - row):
+        if board[row_D][tile].get_piece() is None:
+            available_moves.append([row_D, tile])
+            row_D += 1
+        elif board[row_D][tile].get_piece() is not None and opposite_side(temp_piece, board[row_D][tile].get_piece()):
+            available_moves.append([row_D, tile])
 
 
 

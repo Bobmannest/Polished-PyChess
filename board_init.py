@@ -50,3 +50,6 @@ def test_init_pieces():
     board[3][5].set_piece(Rook('bk-rook'))
     board[3][6].set_piece(Rook('bk-rook'))
 
+    board[1][3].set_piece(Rook('bk-rook'))
+    board[5][3].set_piece(Rook('bk-rook'))
+    board[6][3].set_piece(Rook('bk-rook'))
