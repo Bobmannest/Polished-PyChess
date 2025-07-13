@@ -60,7 +60,7 @@ class Knight(Piece):
         t = tile + 1
         available_moves.append([row + 2, t]), available_moves.append([row - 2, t])
 
-        return remove_occupied_tile_positions(board, available_moves)
+        return check_occupied_tile_positions(board, temp_piece, available_moves)
 
 
 class Bishop(Piece):
@@ -97,19 +97,13 @@ class King(Piece):
             r = row - 1
         available_moves.append([row, tile - 1]), available_moves.append([row, tile + 1])
 
-        return remove_occupied_tile_positions(board, available_moves)
+        return check_occupied_tile_positions(board, temp_piece, available_moves)
 
 
-def remove_out_of_range_positions(board, available_moves):
+def check_occupied_tile_positions(board, temp_piece, available_moves):
     for row in board:
         for tile in row:
-            if tile.get_position()[0] < 0 or tile.get_position()[0] > 7:
-                print('e')
-
-def remove_occupied_tile_positions(board, available_moves):
-    for row in board:
-        for tile in row:
-            if tile.get_piece() is not None and tile.get_position() in available_moves:
+            if tile.get_piece() is not None and tile.get_position() in available_moves and not opposite_side(temp_piece, tile.get_piece()):
                 available_moves.remove(tile.get_position())
     return available_moves
 
