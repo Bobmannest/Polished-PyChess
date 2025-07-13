@@ -5,9 +5,9 @@ DONE 2) Restrict piece movement depending on the type of piece AND if there are 
 
 DONE 3) Allow pieces to be taken by others so detect if other target piece on the target tile is an enemy piece
 
-extra) Let taking enemy pieces be shown as a visual when dragging a piece
+DONE extra) Let taking enemy pieces be shown as a visual when dragging a piece
 
-4) Pawns need more complex logic unlike the other pieces!
+DONE 4) Pawns need more complex logic unlike the other pieces!
 
 5) Add king logic that takes into consideration all other pieces' available moves so king cant go to a tile which he
 can die to
