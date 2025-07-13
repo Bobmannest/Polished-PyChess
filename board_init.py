@@ -44,12 +44,9 @@ def init_pieces():
 
 
 def test_init_pieces():
-    board[3][3].set_piece(Pawn('bk-pawn'))
-    board[1][2].set_piece(Rook('bk-rook'))
-    board[1][3].set_piece(Rook('bk-rook'))
-    board[1][4].set_piece(Rook('bk-rook'))
-    board[5][2].set_piece(Rook('wt-rook'))
-    board[5][3].set_piece(Rook('wt-rook'))
-    board[5][4].set_piece(Rook('wt-rook'))
-    board[7][0].set_piece(Rook('bk-rook'))
-    board[7][7].set_piece(Rook('bk-rook'))
+    board[3][3].set_piece(Rook('wt-rook'))
+    board[3][0].set_piece(Rook('bk-rook'))
+    board[3][1].set_piece(Rook('bk-rook'))
+    board[3][5].set_piece(Rook('bk-rook'))
+    board[3][6].set_piece(Rook('bk-rook'))
+

@@ -46,35 +46,28 @@ class Rook(Piece):
         return available_moves
 
 
-#I will make this less spaghetti later
 def rook_available_moves(available_moves, temp_piece, tile_pos, board):
     row, tile = tile_pos
 
-    t = tile - 1
-    while t >= 0 and board[row][t].get_piece() is None:
-        available_moves.append([row, t])
-        t -= 1
-    if board[row][t].get_piece() is not None and opposite_side(temp_piece, board[row][t].get_piece()):
-        available_moves.append([row, t])
-    t = tile + 1
-    while t <= 7 and board[row][t].get_piece() is None:
-        available_moves.append([row, t])
-        t += 1
-    if t <= 7 and board[row][t].get_piece() is not None and opposite_side(temp_piece, board[row][t].get_piece()):
-        available_moves.append([row, t])
-    r = row - 1
-    t = tile
-    while r >= 0 and board[r][t].get_piece() is None:
-        available_moves.append([r, t])
-        r -= 1
-    if board[r][t].get_piece() is not None and opposite_side(temp_piece, board[r][t].get_piece()):
-        available_moves.append([r, t])
-    r = row + 1
-    while r <= 7 and board[r][t].get_piece() is None:
-        available_moves.append([r, t])
-        r += 1
-    if r <= 7 and board[r][t].get_piece() is not None and opposite_side(temp_piece, board[r][t].get_piece()):
-        available_moves.append([r, t])
+    tile_L = tile - 1
+    for _ in range(tile):
+        if board[row][tile_L].get_piece() is None:
+            available_moves.append([row, tile_L])
+            tile_L -= 1
+        elif board[row][tile_L].get_piece() is not None and opposite_side(temp_piece, board[row][tile_L].get_piece()):
+            available_moves.append([row, tile_L])
+
+    tile_R = tile + 1
+    for _ in range(7 - tile):
+        if board[row][tile_R].get_piece() is None:
+            available_moves.append([row, tile_R])
+            tile_R += 1
+        elif board[row][tile_R].get_piece() is not None and opposite_side(temp_piece, board[row][tile_R].get_piece()):
+            available_moves.append([row, tile_R])
+
+
+
+
 
 
 class Knight(Piece):
@@ -152,6 +145,12 @@ class King(Piece):
 
         return remove_occupied_tile_positions(board, available_moves)
 
+
+def remove_out_of_range_positions(board, available_moves):
+    for row in board:
+        for tile in row:
+            if tile.get_position()[0] < 0 or tile.get_position()[0] > 7:
+                print('e')
 
 def remove_occupied_tile_positions(board, available_moves):
     for row in board:
