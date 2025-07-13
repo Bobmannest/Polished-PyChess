@@ -41,47 +41,9 @@ class Rook(Piece):
     def get_available_moves(self, temp_piece, tile_pos, board):
         available_moves = []
 
-        rook_available_moves(available_moves, temp_piece, tile_pos, board)
+        line_move_calc(available_moves, temp_piece, tile_pos, board, [[0, -1], [0, 1], [1, 0], [-1, 0]])
 
         return available_moves
-
-
-def rook_available_moves(available_moves, temp_piece, tile_pos, board):
-    row, tile = tile_pos
-
-    tile_L = tile - 1
-    for _ in range(tile):
-        if board[row][tile_L].get_piece() is None:
-            available_moves.append([row, tile_L])
-            tile_L -= 1
-        elif board[row][tile_L].get_piece() is not None and opposite_side(temp_piece, board[row][tile_L].get_piece()):
-            available_moves.append([row, tile_L])
-
-
-    tile_R = tile + 1
-    for _ in range(7 - tile):
-        if board[row][tile_R].get_piece() is None:
-            available_moves.append([row, tile_R])
-            tile_R += 1
-        elif board[row][tile_R].get_piece() is not None and opposite_side(temp_piece, board[row][tile_R].get_piece()):
-            available_moves.append([row, tile_R])
-
-    row_U = row - 1
-    for _ in range(row):
-        if board[row_U][tile].get_piece() is None:
-            available_moves.append([row_U, tile])
-            row_U -= 1
-        elif board[row_U][tile].get_piece() is not None and opposite_side(temp_piece, board[row_U][tile].get_piece()):
-            available_moves.append([row_U, tile])
-
-    row_D = row + 1
-    for _ in range(7 - row):
-        if board[row_D][tile].get_piece() is None:
-            available_moves.append([row_D, tile])
-            row_D += 1
-        elif board[row_D][tile].get_piece() is not None and opposite_side(temp_piece, board[row_D][tile].get_piece()):
-            available_moves.append([row_D, tile])
-
 
 
 class Knight(Piece):
@@ -105,42 +67,20 @@ class Bishop(Piece):
     def get_available_moves(self, temp_piece, tile_pos, board):
         available_moves = []
 
-        bishop_available_moves(available_moves, tile_pos, board)
+        line_move_calc(available_moves, temp_piece, tile_pos, board, [[-1, -1], [-1, 1], [1, -1], [1, 1]])
 
         return available_moves
 
-#Make less spaghetti garbage
-def bishop_available_moves(available_moves, tile_pos, board):
-    row, tile = tile_pos
-
-    r = row - 1
-    t = tile - 1
-    r2 = row + 1
-    t2 = tile - 1
-    while t >= 0:
-        available_moves.append([r, t])
-        available_moves.append([r2, t2])
-        r -= 1
-        t -= 1
-        r2 += 1
-        t2 -= 1
-
-    r = row - 1
-    t = tile + 1
-    r2 = row + 1
-    t2 = tile + 1
-    while t <= 7:
-        available_moves.append([r, t])
-        available_moves.append([r2, t2])
-        r -= 1
-        t += 1
-        r2 += 1
-        t2 += 1
 
 
 class Queen(Piece):
     def get_available_moves(self, temp_piece, tile_pos, board):
-        print('queen')
+        available_moves = []
+
+        line_move_calc(available_moves, temp_piece, tile_pos, board, [[0, -1], [0, 1], [1, 0], [-1, 0]])
+        line_move_calc(available_moves, temp_piece, tile_pos, board, [[-1, -1], [-1, 1], [1, -1], [1, 1]])
+
+        return available_moves
 
 
 class King(Piece):
@@ -172,6 +112,24 @@ def remove_occupied_tile_positions(board, available_moves):
             if tile.get_piece() is not None and tile.get_position() in available_moves:
                 available_moves.remove(tile.get_position())
     return available_moves
+
+
+def line_move_calc(available_moves, temp_piece, tile_pos, board, increments):
+    for position in increments:
+        row, tile = tile_pos
+        row += position[0]
+        tile += position[1]
+        while 0 <= row <= 7 and 0 <= tile <= 7:
+            target_piece = board[row][tile].get_piece()
+            if target_piece is None:
+                available_moves.append([row, tile])
+            elif target_piece is not None and opposite_side(temp_piece, target_piece):
+                available_moves.append([row, tile])
+                break
+            elif target_piece is not None and not opposite_side(temp_piece, target_piece):
+                break
+            row += position[0]
+            tile += position[1]
 
 
 def opposite_side(current_piece, target_piece):
