@@ -11,7 +11,8 @@ pygame.init()
 clock = pygame.time.Clock()
 
 init_tiles()
-test_init_pieces() #init_pieces()
+#test_init_pieces()
+init_pieces()
 init = True
 
 while True:
