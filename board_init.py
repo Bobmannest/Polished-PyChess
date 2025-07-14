@@ -42,5 +42,6 @@ def init_pieces():
 
 def test_init_pieces():
     board[3][3].set_piece(King('wt-king'))
-    board[3][0].set_piece(Queen('bk-queen'))
-    board[3][5].set_piece(Queen('wt-queen'))
+    board[4][2].set_piece(Queen('bk-queen'))
+    board[4][4].set_piece(Queen('bk-queen'))
+    board[2][4].set_piece(Queen('bk-queen'))

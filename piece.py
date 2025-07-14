@@ -79,7 +79,6 @@ class Queen(Piece):
 
         line_move_calc(available_moves, temp_piece, tile_pos, board, [[0, -1], [0, 1], [1, 0], [-1, 0]])
         line_move_calc(available_moves, temp_piece, tile_pos, board, [[-1, -1], [-1, 1], [1, -1], [1, 1]])
-
         return available_moves
 
 
@@ -96,23 +95,30 @@ class King(Piece):
                 t += 1
             r = row - 1
         available_moves.append([row, tile - 1]), available_moves.append([row, tile + 1])
-
         check_occupied_tile_positions(board, temp_piece, available_moves)
-        check_king_available_moves(temp_piece, tile_pos, board, available_moves)
 
-        return available_moves
+        return check_king_available_moves(temp_piece, board, available_moves)
 
 
-def check_king_available_moves(temp_piece, tile_pos, board, available_moves):
+def check_king_available_moves(temp_piece, board, available_moves):
+    safe_moves = available_moves.copy()
+    bad_moves = []
     for row in board:
         for tile in row:
             if tile.get_piece() is not None and 'king' not in tile.get_piece().get_type():
                 if opposite_side(temp_piece, tile.get_piece()):
-                    for position in available_moves:
-                        if position in tile.get_piece().get_available_moves(tile.get_piece(), tile.get_position(),
-                                                                            board):
-                            available_moves.remove(position)
+                    bad_moves.append(tile.get_piece().get_available_moves(tile.get_piece(), tile.get_position(), board))
 
+    #Combines bad move sublists for each piece into 1 set of items
+    all_bad_moves = set()
+    for piece_moves in bad_moves:
+        for move in piece_moves:
+            all_bad_moves.add(tuple(move))
+
+    #Creates a list of safe moves that removes bad moves from available_moves
+    safe_moves = [move for move in safe_moves if tuple(move) not in all_bad_moves]
+
+    return safe_moves
 
 def check_occupied_tile_positions(board, temp_piece, available_moves):
     for row in board:
