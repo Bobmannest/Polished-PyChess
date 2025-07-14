@@ -18,13 +18,15 @@ class Pawn(Piece):
         if 'wt' in self.type:
             if board[row - 1][tile].get_piece() is None:
                 available_moves.append([row - 1, tile])
-            pawn_move_calc(board[row - 1][tile - 1], temp_piece, available_moves)
+            if tile > 0:
+                pawn_move_calc(board[row - 1][tile - 1], temp_piece, available_moves)
             if tile < 7:
                 pawn_move_calc(board[row - 1][tile + 1], temp_piece, available_moves)
         elif 'bk' in self.type:
             if board[row + 1][tile].get_piece() is None:
                 available_moves.append([row + 1, tile])
-            pawn_move_calc(board[row + 1][tile - 1], temp_piece, available_moves)
+            if tile > 0:
+                pawn_move_calc(board[row + 1][tile - 1], temp_piece, available_moves)
             if tile < 7:
                 pawn_move_calc(board[row + 1][tile + 1], temp_piece, available_moves)
         return available_moves
@@ -71,7 +73,6 @@ class Bishop(Piece):
         return available_moves
 
 
-
 class Queen(Piece):
     def get_available_moves(self, temp_piece, tile_pos, board):
         available_moves = []
@@ -96,13 +97,28 @@ class King(Piece):
             r = row - 1
         available_moves.append([row, tile - 1]), available_moves.append([row, tile + 1])
 
-        return check_occupied_tile_positions(board, temp_piece, available_moves)
+        check_occupied_tile_positions(board, temp_piece, available_moves)
+        check_king_available_moves(temp_piece, tile_pos, board, available_moves)
+
+        return available_moves
+
+
+def check_king_available_moves(temp_piece, tile_pos, board, available_moves):
+    for row in board:
+        for tile in row:
+            if tile.get_piece() is not None and 'king' not in tile.get_piece().get_type():
+                if opposite_side(temp_piece, tile.get_piece()):
+                    for position in available_moves:
+                        if position in tile.get_piece().get_available_moves(tile.get_piece(), tile.get_position(),
+                                                                            board):
+                            available_moves.remove(position)
 
 
 def check_occupied_tile_positions(board, temp_piece, available_moves):
     for row in board:
         for tile in row:
-            if tile.get_piece() is not None and tile.get_position() in available_moves and not opposite_side(temp_piece, tile.get_piece()):
+            if tile.get_piece() is not None and tile.get_position() in available_moves and not opposite_side(temp_piece,
+                                                                                                             tile.get_piece()):
                 available_moves.remove(tile.get_position())
     return available_moves
 

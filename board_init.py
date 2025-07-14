@@ -41,12 +41,6 @@ def init_pieces():
 
 
 def test_init_pieces():
-    board[3][3].set_piece(Bishop('bk-bishop'))
-    board[3][0].set_piece(Rook('bk-rook'))
-    board[3][1].set_piece(Rook('bk-rook'))
-    board[3][5].set_piece(Rook('bk-rook'))
-    board[3][6].set_piece(Rook('bk-rook'))
-
-    board[1][3].set_piece(Rook('bk-rook'))
-    board[5][3].set_piece(Rook('bk-rook'))
-    board[6][3].set_piece(Rook('bk-rook'))
+    board[3][3].set_piece(King('wt-king'))
+    board[3][0].set_piece(Queen('bk-queen'))
+    board[3][5].set_piece(Queen('wt-queen'))
