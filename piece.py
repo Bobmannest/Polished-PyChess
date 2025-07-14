@@ -31,6 +31,21 @@ class Pawn(Piece):
                 pawn_move_calc(board[row + 1][tile + 1], temp_piece, available_moves)
         return available_moves
 
+    def get_attack_moves(self, temp_piece, tile_pos, board):
+        attack_moves = []
+        row, tile = tile_pos
+        if 'wt' in self.type:
+            if tile > 0:
+                attack_moves.append([row - 1, tile - 1])
+            if tile < 7:
+                attack_moves.append([row - 1, tile + 1])
+        elif 'bk' in self.type:
+            if tile > 0:
+                attack_moves.append([row + 1, tile - 1])
+            if tile < 7:
+                attack_moves.append([row + 1, tile + 1])
+        return attack_moves
+
 
 def pawn_move_calc(tile, temp_piece, available_moves):
     if tile.get_piece() is not None:
@@ -105,9 +120,14 @@ def check_king_available_moves(temp_piece, board, available_moves):
     bad_moves = []
     for row in board:
         for tile in row:
-            if tile.get_piece() is not None and 'king' not in tile.get_piece().get_type():
-                if opposite_side(temp_piece, tile.get_piece()):
-                    bad_moves.append(tile.get_piece().get_available_moves(tile.get_piece(), tile.get_position(), board))
+            tile_piece = tile.get_piece()
+            if tile_piece is not None and 'king' not in tile_piece.get_type():
+                if 'pawn' not in tile_piece.get_type():
+                    if opposite_side(temp_piece, tile_piece):
+                        bad_moves.append(tile_piece.get_available_moves(tile_piece, tile.get_position(), board))
+                elif 'pawn' in tile_piece.get_type():
+                    if opposite_side(temp_piece, tile_piece):
+                        bad_moves.append(tile_piece.get_attack_moves(tile_piece, tile.get_position(), board))
 
     #Combines bad move sublists for each piece into 1 set of items
     all_bad_moves = set()

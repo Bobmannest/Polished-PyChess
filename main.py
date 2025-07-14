@@ -13,7 +13,6 @@ clock = pygame.time.Clock()
 init_tiles()
 test_init_pieces()
 #init_pieces()
-init = True
 
 while True:
     dt = clock.tick(60) / 1000 #delta time and clock tick for FPS
@@ -24,10 +23,6 @@ while True:
     tile_hover_color_change(mouse_pos)
     draw_board()
     mouse_events_setup(mouse_pos)
-    if init:
-        #board_check()
-        init = False
-
 
     pygame.display.flip()
 
