@@ -131,6 +131,17 @@ class King(Piece):
 
         return check_king_available_moves(temp_piece, board, available_moves)
 
+def check_occupied_tile_positions(board, temp_piece, king_available_moves):
+    print(king_available_moves)
+    for row in board:
+        for tile in row:
+            if tile.get_piece() is not None and tile.get_position() in king_available_moves and not opposite_side(
+                    temp_piece,
+                    tile.get_piece()):
+                king_available_moves.remove(tile.get_position())
+                tile.get_piece().set_guarded(True)
+    return king_available_moves
+
 
 def check_king_available_moves(temp_piece, board, available_moves):
     safe_moves = available_moves.copy()
@@ -159,18 +170,6 @@ def check_king_available_moves(temp_piece, board, available_moves):
 def remove_out_of_range_moves(available_moves):
     return [move for move in available_moves if all(row_or_tile < 8 for row_or_tile in move)]
 
-
-# DON'T check the entire board just check available moves
-# This must be fixed if it can
-def check_occupied_tile_positions(board, temp_piece, available_moves):
-    print(available_moves)
-    for row in board:
-        for tile in row:
-            if tile.get_piece() is not None and tile.get_position() in available_moves and not opposite_side(temp_piece,
-                                                                                                             tile.get_piece()):
-                available_moves.remove(tile.get_position())
-                tile.get_piece().set_guarded(True)
-    return available_moves
 
 
 def check_guarded_moves(board, king_available_moves):
