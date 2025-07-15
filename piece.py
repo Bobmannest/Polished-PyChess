@@ -121,15 +121,13 @@ class King(Piece):
                 t += 1
             r = row - 1
         available_moves.append([row, tile - 1]), available_moves.append([row, tile + 1])
-
         available_moves = remove_out_of_range_moves(available_moves)
         check_occupied_tile_positions(board, temp_piece, available_moves)
-        check_guarded_moves(board, available_moves)
+        available_moves = check_guarded_moves(board, available_moves) #Problematic1
 
         return check_king_available_moves(temp_piece, board, available_moves)
 
 
-#!!!
 def check_king_available_moves(temp_piece, board, available_moves):
     safe_moves = available_moves.copy()
     bad_moves = []
@@ -153,11 +151,13 @@ def check_king_available_moves(temp_piece, board, available_moves):
     return safe_moves
 
 
-#Returns a new list of moves that have out of range moves filtered out of original available moves list
+# Returns a new list of moves that have out of range moves filtered out of original available moves list
 def remove_out_of_range_moves(available_moves):
     return [move for move in available_moves if all(row_or_tile < 8 for row_or_tile in move)]
 
 
+# DON'T check the entire board just check available moves
+# Fix this
 def check_occupied_tile_positions(board, temp_piece, available_moves):
     for row in board:
         for tile in row:
@@ -169,12 +169,13 @@ def check_occupied_tile_positions(board, temp_piece, available_moves):
 
 
 def check_guarded_moves(board, available_moves):
+    guarded_moves = []
     for move in available_moves:
         row, tile = move
         if board[row][tile].get_piece() is not None:
             if board[row][tile].get_piece().is_guarded():
-                available_moves.remove([row, tile])
-    return available_moves
+                guarded_moves.append([row, tile])
+    return [move for move in available_moves if move not in guarded_moves]
 
 
 def line_move_calc(available_moves, temp_piece, tile_pos, board, increments):

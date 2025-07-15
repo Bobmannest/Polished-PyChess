@@ -4,4 +4,4 @@ for some reason this is nto a problem on far left
 - (FIXED) Pawns need to have kill available tiles seperated from move available tiles because king movement logic cannot differentiate between them
 - (FIXED) Guard status will not go away after a piece is not being guarded
 - (FIXED) Index out of range error for king
-- Pawns sometimes aren't marked as guarded when they actually are
+- (FIXED) Pawns sometimes aren't marked as guarded when they actually are

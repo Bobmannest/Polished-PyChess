@@ -42,7 +42,11 @@ def init_pieces():
 
 def test_init_pieces():
     board[3][3].set_piece(King('wt-king'))
+
     board[1][5].set_piece(Bishop('bk-bishop'))
     board[1][3].set_piece(Pawn('bk-pawn'))
+    board[1][2].set_piece(Pawn('bk-pawn'))
+    board[0][2].set_piece(Queen('bk-queen'))
+
 
 
