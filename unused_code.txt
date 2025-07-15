@@ -6,7 +6,7 @@ for row in board:
             tile.get_piece().set_guarded(True)
 return available_moves
 
-#New version i cant implement due to weird available_moves list bug
+#New version
 def check_occupied_tile_positions(board, temp_piece, available_moves):
     occupied_positions = []
     for move in available_moves:
