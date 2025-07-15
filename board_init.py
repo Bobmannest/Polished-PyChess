@@ -18,12 +18,12 @@ def init_tiles():
 
 def init_pieces():
     board[0][0].set_piece(Rook('bk-rook'))
-    board[0][1].set_piece(Knight('bk-knight'))
+    #board[0][1].set_piece(Knight('bk-knight'))
     board[0][2].set_piece(Bishop('bk-bishop'))
     board[0][3].set_piece(Queen('bk-queen'))
     board[0][4].set_piece(King('bk-king'))
     board[0][5].set_piece(Bishop('bk-bishop'))
-    board[0][6].set_piece(Knight('bk-knight'))
+    #board[0][6].set_piece(Knight('bk-knight'))
     board[0][7].set_piece(Rook('bk-rook'))
 
     board[7][0].set_piece(Rook('wt-rook'))

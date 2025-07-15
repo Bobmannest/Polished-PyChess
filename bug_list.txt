@@ -5,3 +5,4 @@ for some reason this is nto a problem on far left
 - (FIXED) Guard status will not go away after a piece is not being guarded
 - (FIXED) Index out of range error for king
 - (FIXED) Pawns sometimes aren't marked as guarded when they actually are
+- Strangest bug where somehow half the time the available_moves parameter for check_out_of_range_moves is the one for enemy knights

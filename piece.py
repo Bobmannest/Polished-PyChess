@@ -19,111 +19,115 @@ class Piece:
 
 class Pawn(Piece):
     def get_available_moves(self, temp_piece, tile_pos, board):
-        available_moves = []
+        pawn_available_moves = []
 
         row, tile = tile_pos
         if 'wt' in self.type:
             if board[row - 1][tile].get_piece() is None:
-                available_moves.append([row - 1, tile])
+                pawn_available_moves.append([row - 1, tile])
             if tile > 0:
-                pawn_move_calc(board[row - 1][tile - 1], temp_piece, available_moves)
+                pawn_move_calc(board[row - 1][tile - 1], temp_piece, pawn_available_moves)
             if tile < 7:
-                pawn_move_calc(board[row - 1][tile + 1], temp_piece, available_moves)
+                pawn_move_calc(board[row - 1][tile + 1], temp_piece, pawn_available_moves)
         elif 'bk' in self.type:
             if board[row + 1][tile].get_piece() is None:
-                available_moves.append([row + 1, tile])
+                pawn_available_moves.append([row + 1, tile])
             if tile > 0:
-                pawn_move_calc(board[row + 1][tile - 1], temp_piece, available_moves)
+                pawn_move_calc(board[row + 1][tile - 1], temp_piece, pawn_available_moves)
             if tile < 7:
-                pawn_move_calc(board[row + 1][tile + 1], temp_piece, available_moves)
+                pawn_move_calc(board[row + 1][tile + 1], temp_piece, pawn_available_moves)
 
-        return available_moves
+        return pawn_available_moves
 
     def get_attack_moves(self, tile_pos):
-        attack_moves = []
+        pawn_attack_moves = []
         row, tile = tile_pos
         if 'wt' in self.type:
             if tile > 0:
-                attack_moves.append([row - 1, tile - 1])
+                pawn_attack_moves.append([row - 1, tile - 1])
             if tile < 7:
-                attack_moves.append([row - 1, tile + 1])
+                pawn_attack_moves.append([row - 1, tile + 1])
         elif 'bk' in self.type:
             if tile > 0:
-                attack_moves.append([row + 1, tile - 1])
+                pawn_attack_moves.append([row + 1, tile - 1])
             if tile < 7:
-                attack_moves.append([row + 1, tile + 1])
-        return attack_moves
+                pawn_attack_moves.append([row + 1, tile + 1])
+        return pawn_attack_moves
 
 
-def pawn_move_calc(tile, temp_piece, available_moves):
+def pawn_move_calc(tile, temp_piece, pawn_available_moves):
     if tile.get_piece() is not None:
         if opposite_side(temp_piece, tile.get_piece()):
-            available_moves.append(tile.get_position())
+            pawn_available_moves.append(tile.get_position())
         else:
             tile.get_piece().set_guarded(True)
 
 
 class Rook(Piece):
     def get_available_moves(self, temp_piece, tile_pos, board):
-        available_moves = []
+        rook_available_moves = []
 
-        line_move_calc(available_moves, temp_piece, tile_pos, board, [[0, -1], [0, 1], [1, 0], [-1, 0]])
+        line_move_calc(rook_available_moves, temp_piece, tile_pos, board, [[0, -1], [0, 1], [1, 0], [-1, 0]])
 
-        return available_moves
+        return rook_available_moves
 
 
 class Knight(Piece):
     def get_available_moves(self, temp_piece, tile_pos, board):
-        available_moves = []
+        knight_available_moves = []
         row, tile = tile_pos
 
         t = tile + 2
-        available_moves.append([row + 1, t]), available_moves.append([row - 1, t])
+        knight_available_moves.append([row + 1, t]), knight_available_moves.append([row - 1, t])
         t = tile - 2
-        available_moves.append([row + 1, t]), available_moves.append([row - 1, t])
+        knight_available_moves.append([row + 1, t]), knight_available_moves.append([row - 1, t])
         t = tile - 1
-        available_moves.append([row + 2, t]), available_moves.append([row - 2, t])
+        knight_available_moves.append([row + 2, t]), knight_available_moves.append([row - 2, t])
         t = tile + 1
-        available_moves.append([row + 2, t]), available_moves.append([row - 2, t])
+        knight_available_moves.append([row + 2, t]), knight_available_moves.append([row - 2, t])
 
-        return check_occupied_tile_positions(board, temp_piece, available_moves)
+        knight_available_moves = check_occupied_tile_positions(board, temp_piece, knight_available_moves)
+
+        return knight_available_moves
 
 
 class Bishop(Piece):
     def get_available_moves(self, temp_piece, tile_pos, board):
-        available_moves = []
+        bishop_available_moves = []
 
-        line_move_calc(available_moves, temp_piece, tile_pos, board, [[-1, -1], [-1, 1], [1, -1], [1, 1]])
+        line_move_calc(bishop_available_moves, temp_piece, tile_pos, board, [[-1, -1], [-1, 1], [1, -1], [1, 1]])
 
-        return available_moves
+        return bishop_available_moves
 
 
 class Queen(Piece):
     def get_available_moves(self, temp_piece, tile_pos, board):
-        available_moves = []
+        queen_available_moves = []
 
-        line_move_calc(available_moves, temp_piece, tile_pos, board, [[0, -1], [0, 1], [1, 0], [-1, 0]])
-        line_move_calc(available_moves, temp_piece, tile_pos, board, [[-1, -1], [-1, 1], [1, -1], [1, 1]])
+        line_move_calc(queen_available_moves, temp_piece, tile_pos, board, [[0, -1], [0, 1], [1, 0], [-1, 0]])
+        line_move_calc(queen_available_moves, temp_piece, tile_pos, board, [[-1, -1], [-1, 1], [1, -1], [1, 1]])
 
-        return available_moves
+        return queen_available_moves
 
 
 class King(Piece):
     def get_available_moves(self, temp_piece, tile_pos, board):
-        available_moves = []
+        king_available_moves = []
         row, tile = tile_pos
 
         r = row + 1
         for _ in range(2):
             t = tile - 1
             for _ in range(3):
-                available_moves.append([r, t])
+                king_available_moves.append([r, t])
                 t += 1
             r = row - 1
-        available_moves.append([row, tile - 1]), available_moves.append([row, tile + 1])
-        available_moves = remove_out_of_range_moves(available_moves)
-        check_occupied_tile_positions(board, temp_piece, available_moves)
-        available_moves = check_guarded_moves(board, available_moves) #Problematic1
+        king_available_moves.append([row, tile - 1])
+        king_available_moves.append([row, tile + 1])
+
+        in_range_available_moves = remove_out_of_range_moves(king_available_moves)
+        unoccupied_available_moves = check_occupied_tile_positions(board, temp_piece, in_range_available_moves)
+        available_moves = check_guarded_moves(board, unoccupied_available_moves)
 
         return check_king_available_moves(temp_piece, board, available_moves)
 
@@ -157,8 +161,9 @@ def remove_out_of_range_moves(available_moves):
 
 
 # DON'T check the entire board just check available moves
-# Fix this
+# This must be fixed if it can
 def check_occupied_tile_positions(board, temp_piece, available_moves):
+    print(available_moves)
     for row in board:
         for tile in row:
             if tile.get_piece() is not None and tile.get_position() in available_moves and not opposite_side(temp_piece,
@@ -168,14 +173,14 @@ def check_occupied_tile_positions(board, temp_piece, available_moves):
     return available_moves
 
 
-def check_guarded_moves(board, available_moves):
+def check_guarded_moves(board, king_available_moves):
     guarded_moves = []
-    for move in available_moves:
+    for move in king_available_moves:
         row, tile = move
         if board[row][tile].get_piece() is not None:
             if board[row][tile].get_piece().is_guarded():
                 guarded_moves.append([row, tile])
-    return [move for move in available_moves if move not in guarded_moves]
+    return [move for move in king_available_moves if move not in guarded_moves]
 
 
 def line_move_calc(available_moves, temp_piece, tile_pos, board, increments):
