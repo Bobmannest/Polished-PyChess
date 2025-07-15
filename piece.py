@@ -17,10 +17,10 @@ class Piece:
         self.guarded = guarded_status
 
 
-#Fix spaghetti with some nice functions which take +1 or -1 as input
 class Pawn(Piece):
     def get_available_moves(self, temp_piece, tile_pos, board):
         available_moves = []
+
         row, tile = tile_pos
         if 'wt' in self.type:
             if board[row - 1][tile].get_piece() is None:
@@ -36,6 +36,7 @@ class Pawn(Piece):
                 pawn_move_calc(board[row + 1][tile - 1], temp_piece, available_moves)
             if tile < 7:
                 pawn_move_calc(board[row + 1][tile + 1], temp_piece, available_moves)
+
         return available_moves
 
     def get_attack_moves(self, tile_pos):
