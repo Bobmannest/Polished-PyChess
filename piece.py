@@ -1,6 +1,7 @@
 class Piece:
     def __init__(self, type: str):
         self.type = type
+        self.guarded = False
 
     def get_available_moves(self, temp_piece, tile_pos, board):
         # Optional: raise NotImplementedError to force subclasses to implement this
@@ -8,6 +9,12 @@ class Piece:
 
     def get_type(self):
         return self.type
+
+    def is_guarded(self):
+        return self.guarded
+
+    def set_guarded(self, guarded_status: bool):
+        self.guarded = guarded_status
 
 
 #Fix spaghetti with some nice functions which take +1 or -1 as input
@@ -51,6 +58,8 @@ def pawn_move_calc(tile, temp_piece, available_moves):
     if tile.get_piece() is not None:
         if opposite_side(temp_piece, tile.get_piece()):
             available_moves.append(tile.get_position())
+        else:
+            tile.get_piece().set_guarded(True)
 
 
 class Rook(Piece):
@@ -94,6 +103,7 @@ class Queen(Piece):
 
         line_move_calc(available_moves, temp_piece, tile_pos, board, [[0, -1], [0, 1], [1, 0], [-1, 0]])
         line_move_calc(available_moves, temp_piece, tile_pos, board, [[-1, -1], [-1, 1], [1, -1], [1, 1]])
+
         return available_moves
 
 
@@ -111,10 +121,12 @@ class King(Piece):
             r = row - 1
         available_moves.append([row, tile - 1]), available_moves.append([row, tile + 1])
         check_occupied_tile_positions(board, temp_piece, available_moves)
+        check_guarded_moves(board, temp_piece, available_moves)
 
         return check_king_available_moves(temp_piece, board, available_moves)
 
 
+#!!!
 def check_king_available_moves(temp_piece, board, available_moves):
     safe_moves = available_moves.copy()
     bad_moves = []
@@ -122,12 +134,10 @@ def check_king_available_moves(temp_piece, board, available_moves):
         for tile in row:
             tile_piece = tile.get_piece()
             if tile_piece is not None and 'king' not in tile_piece.get_type():
-                if 'pawn' not in tile_piece.get_type():
-                    if opposite_side(temp_piece, tile_piece):
-                        bad_moves.append(tile_piece.get_available_moves(tile_piece, tile.get_position(), board))
-                elif 'pawn' in tile_piece.get_type():
-                    if opposite_side(temp_piece, tile_piece):
-                        bad_moves.append(tile_piece.get_attack_moves(tile_piece, tile.get_position(), board))
+                if 'pawn' not in tile_piece.get_type() and opposite_side(temp_piece, tile_piece):
+                    bad_moves.append(tile_piece.get_available_moves(tile_piece, tile.get_position(), board))
+                elif 'pawn' in tile_piece.get_type() and opposite_side(temp_piece, tile_piece):
+                    bad_moves.append(tile_piece.get_attack_moves(tile_piece, tile.get_position(), board))
 
     #Combines bad move sublists for each piece into 1 set of items
     all_bad_moves = set()
@@ -140,12 +150,23 @@ def check_king_available_moves(temp_piece, board, available_moves):
 
     return safe_moves
 
+
 def check_occupied_tile_positions(board, temp_piece, available_moves):
     for row in board:
         for tile in row:
             if tile.get_piece() is not None and tile.get_position() in available_moves and not opposite_side(temp_piece,
                                                                                                              tile.get_piece()):
                 available_moves.remove(tile.get_position())
+                tile.get_piece().set_guarded(True)
+    return available_moves
+
+
+def check_guarded_moves(board, temp_piece, available_moves):
+    for move in available_moves:
+        row, tile = move
+        tile_piece = board[row][tile].get_piece()
+        if tile_piece is not None and board[row][tile].get_piece().is_guarded():
+            available_moves.remove([row, tile])
     return available_moves
 
 
@@ -162,6 +183,7 @@ def line_move_calc(available_moves, temp_piece, tile_pos, board, increments):
                 available_moves.append([row, tile])
                 break
             elif target_piece is not None and not opposite_side(temp_piece, target_piece):
+                target_piece.set_guarded(True)
                 break
             row += position[0]
             tile += position[1]

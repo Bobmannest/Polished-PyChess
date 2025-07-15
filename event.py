@@ -37,6 +37,7 @@ def mouse_click_board_check(mouse_pos):
                     temp_selected_tile = tile
                     temp_selected_piece = tile.get_piece()
                     currently_selected_piece = tile.get_piece()
+                    tile.get_piece().set_guarded(False)
                     tile.set_piece(None)
                 else:
                     currently_selected_piece = None
