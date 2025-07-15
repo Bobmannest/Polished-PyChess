@@ -131,16 +131,15 @@ class King(Piece):
 
         return check_king_available_moves(temp_piece, board, available_moves)
 
-def check_occupied_tile_positions(board, temp_piece, king_available_moves):
-    print(king_available_moves)
+#I want to implement the optimised version but for some reason the parameter available_moves is the knight version
+def check_occupied_tile_positions(board, temp_piece, available_moves):
+    print(available_moves)
     for row in board:
         for tile in row:
-            if tile.get_piece() is not None and tile.get_position() in king_available_moves and not opposite_side(
-                    temp_piece,
-                    tile.get_piece()):
-                king_available_moves.remove(tile.get_position())
+            if tile.get_piece() is not None and tile.get_position() in available_moves and not opposite_side(temp_piece, tile.get_piece()):
+                available_moves.remove(tile.get_position())
                 tile.get_piece().set_guarded(True)
-    return king_available_moves
+    return available_moves
 
 
 def check_king_available_moves(temp_piece, board, available_moves):
