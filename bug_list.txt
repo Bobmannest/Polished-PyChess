@@ -2,4 +2,5 @@
 - (FIXED) Pawns on far right get index out of range errors due to therm checking non existing tiles to the right
 for some reason this is nto a problem on far left
 - (FIXED) Pawns need to have kill available tiles seperated from move available tiles because king movement logic cannot differentiate between them
-- Guard status will nto go away after e piece is not being guarded
+- (FIXED) Guard status will not go away after a piece is not being guarded
+- (FIXED) Index out of range error for king

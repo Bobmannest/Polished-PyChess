@@ -11,8 +11,8 @@ pygame.init()
 clock = pygame.time.Clock()
 
 init_tiles()
-test_init_pieces()
-#init_pieces()
+#test_init_pieces()
+init_pieces()
 
 while True:
     dt = clock.tick(60) / 1000 #delta time and clock tick for FPS

@@ -38,7 +38,7 @@ class Pawn(Piece):
                 pawn_move_calc(board[row + 1][tile + 1], temp_piece, available_moves)
         return available_moves
 
-    def get_attack_moves(self, temp_piece, tile_pos, board):
+    def get_attack_moves(self, tile_pos):
         attack_moves = []
         row, tile = tile_pos
         if 'wt' in self.type:
@@ -120,8 +120,10 @@ class King(Piece):
                 t += 1
             r = row - 1
         available_moves.append([row, tile - 1]), available_moves.append([row, tile + 1])
+
+        available_moves = remove_out_of_range_moves(available_moves)
         check_occupied_tile_positions(board, temp_piece, available_moves)
-        check_guarded_moves(board, temp_piece, available_moves)
+        check_guarded_moves(board, available_moves)
 
         return check_king_available_moves(temp_piece, board, available_moves)
 
@@ -137,7 +139,7 @@ def check_king_available_moves(temp_piece, board, available_moves):
                 if 'pawn' not in tile_piece.get_type() and opposite_side(temp_piece, tile_piece):
                     bad_moves.append(tile_piece.get_available_moves(tile_piece, tile.get_position(), board))
                 elif 'pawn' in tile_piece.get_type() and opposite_side(temp_piece, tile_piece):
-                    bad_moves.append(tile_piece.get_attack_moves(tile_piece, tile.get_position(), board))
+                    bad_moves.append(tile_piece.get_attack_moves(tile.get_position()))
 
     #Combines bad move sublists for each piece into 1 set of items
     all_bad_moves = set()
@@ -147,8 +149,12 @@ def check_king_available_moves(temp_piece, board, available_moves):
 
     #Creates a list of safe moves that removes bad moves from available_moves
     safe_moves = [move for move in safe_moves if tuple(move) not in all_bad_moves]
-
     return safe_moves
+
+
+#Returns a new list of moves that have out of range moves filtered out of original available moves list
+def remove_out_of_range_moves(available_moves):
+    return [move for move in available_moves if all(row_or_tile < 8 for row_or_tile in move)]
 
 
 def check_occupied_tile_positions(board, temp_piece, available_moves):
@@ -161,12 +167,12 @@ def check_occupied_tile_positions(board, temp_piece, available_moves):
     return available_moves
 
 
-def check_guarded_moves(board, temp_piece, available_moves):
+def check_guarded_moves(board, available_moves):
     for move in available_moves:
         row, tile = move
-        tile_piece = board[row][tile].get_piece()
-        if tile_piece is not None and board[row][tile].get_piece().is_guarded():
-            available_moves.remove([row, tile])
+        if board[row][tile].get_piece() is not None:
+            if board[row][tile].get_piece().is_guarded():
+                available_moves.remove([row, tile])
     return available_moves
 
 
