@@ -37,21 +37,9 @@ def mouse_click_board_check(mouse_pos):
                     temp_selected_tile = tile
                     temp_selected_piece = tile.get_piece()
                     currently_selected_piece = tile.get_piece()
-                    tile.get_piece().set_guarded(False)
                     tile.set_piece(None)
                 else:
                     currently_selected_piece = None
-
-
-def mouse_release_board_check(mouse_pos):
-    for row in board:
-        for tile in row:
-            if tile.get_rect().collidepoint(mouse_pos):
-                current_piece_available_moves = temp_selected_piece.get_available_moves(temp_selected_piece, temp_selected_tile.get_position(), board)
-                if tile.get_position() in current_piece_available_moves:
-                    tile.set_piece(currently_selected_piece)
-                else:
-                    temp_selected_tile.set_piece(temp_selected_piece)
 
 
 def piece_dragging_visuals(mouse_pos):
@@ -65,11 +53,30 @@ def piece_dragging_visuals(mouse_pos):
         pygame.mouse.set_visible(1)
 
 
+def mouse_release_board_check(mouse_pos):
+    for row in board:
+        for tile in row:
+            if tile.get_rect().collidepoint(mouse_pos):
+                current_piece_available_moves = temp_selected_piece.get_available_moves(temp_selected_piece, temp_selected_tile.get_position(), board)
+                if tile.get_position() in current_piece_available_moves:
+                    tile.set_piece(currently_selected_piece)
+                else:
+                    temp_selected_tile.set_piece(temp_selected_piece)
+
+def reset_guarded():
+    for row in board:
+        for tile in row:
+            if tile.get_piece() is not None:
+                tile.get_piece().set_guarded(False)
+
+
+
 def mouse_events_setup(mouse_pos):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             exit()
         elif event.type == pygame.MOUSEBUTTONDOWN:
+            reset_guarded()
             mouse_click_board_check(mouse_pos)
         elif event.type == pygame.MOUSEBUTTONUP and currently_selected_piece is not None:
             mouse_release_board_check(mouse_pos)

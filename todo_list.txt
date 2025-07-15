@@ -18,5 +18,5 @@ can die to
 
 7) Add win condition and other misc features like the ability to move pawns up 2 spaces at the first movement
 
-optional) Add a marking system so every friendly piece that is guarded is marked and marked pieces cannot be taken by
+DONE optional) Add a marking system so every friendly piece that is guarded is marked and marked pieces cannot be taken by
 king next turn because if king does it will be check
