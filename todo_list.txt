@@ -14,11 +14,13 @@ DONE extra) king and knight cannot take opponent pieces so modify their function
 DONE 5) Add king logic that takes into consideration all other pieces' available moves so king cant go to a tile which he
 can die to
 
-6) Add pawn conversion choice when they reach the end and pawns get to go up 2 pieces on their first turn
+6) Add actual turns
 
-7) Add win condition and other misc features like the ability to move pawns up 2 spaces at the first movement
+7) Add pawn conversion choice when they reach the end and pawns get to go up 2 pieces on their first turn
+
+8) Add win condition and other misc features like the ability to move pawns up 2 spaces at the first movement
 
 DONE optional) Add a marking system so every friendly piece that is guarded is marked and marked pieces cannot be taken by
 king next turn because if king does it will be check
 
-NOT HAPPENING) one king takes other king moves into consideration
+NOT HAPPENING) one king takes other king moves into anti check consideration
