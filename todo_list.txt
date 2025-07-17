@@ -14,7 +14,7 @@ DONE extra) king and knight cannot take opponent pieces so modify their function
 DONE 5) Add king logic that takes into consideration all other pieces' available moves so king cant go to a tile which he
 can die to
 
-6) Add actual turns
+DONE 6) Add actual turns
 
 7) Add pawn conversion choice when they reach the end and pawns get to go up 2 pieces on their first turn
 
